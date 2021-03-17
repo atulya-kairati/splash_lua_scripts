@@ -16,25 +16,26 @@ function main(splash, args)
       assert(request:set_header('User-Agent', "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36"))
     end
     )
+
+  url = args.url -- get the url from input area
+  assert(splash:go(url)) -- open the url in splash
+  assert(splash:wait(1)) -- wait 1 min to javascript to fully render (optional but needed) 
   
-  url = args.url
-  assert(splash:go(url))
-  assert(splash:wait(1))
-  
-  input_box = splash:select("div .gLFyf")
-  input_box:focus()
-  input_box:send_text('my user agent')
-  assert(splash:wait(1))
-  input_box:send_keys("<Enter>")
+  input_box = splash:select("div .gLFyf") -- selecting required element through css selector
+  input_box:focus() 
+  input_box:send_text('my user agent') -- send text into input
+  assert(splash:wait(1)) 
+  input_box:send_keys("<Enter>") -- emulating keyboard event
   
   -- search_button = assert(splash:select(".FPdoLc center .gNO89b"))
-  -- search_button:mouse_click()
+  -- search_button:mouse_click() -- clicking mouse
   assert(splash:wait(4))
   
-  splash:set_viewport_full()
-  
+  splash:set_viewport_full() -- veiws the full extent of the page
+
+  -- returning a class with required attribute
   return {
-    image = splash:png(),
-    src = splash:html(),
+    image = splash:png(), -- captures screenshot of the web page
+    src = splash:html(), -- raw html
   }
 end
